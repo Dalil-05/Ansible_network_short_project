@@ -1,0 +1,10 @@
+---
+hostname: "Router4"
+interface:
+  - name: "Loopback1"
+    ip: "4.4.4.4/32"
+    description: "Il s'agit de l'interface loopback de R4"
+  - name: "Ethernet0/1"
+    ip: "192.168.3.2/24"
+    description: "Interface Ethernet0/1 vers R3"
+router_id: "4.4.4.4"

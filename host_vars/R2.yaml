@@ -1,0 +1,13 @@
+---
+hostname: "Router2"
+interface:
+  - name: "Loopback1"
+    ip: "2.2.2.2/32"
+    description: "Il s'agit de l'interface loopback de R2"
+  - name: "Ethernet0/1"
+    ip: "192.168.1.2/24"
+    description: "Interface Ethernet0/1 vers R1"
+  - name: "Ethernet0/2"
+    ip: "192.168.2.1/24"
+    description: "Interface Ethernet0/2 vers R3"
+router_id: "2.2.2.2"

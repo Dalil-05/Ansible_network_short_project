@@ -1,0 +1,69 @@
+---
+- name: configuration_test_1
+  hosts: routers
+  tasks:
+    - name: Configuration des hostnames
+      cisco.ios.ios_hostname:
+        config:
+          hostname: "{{ hostname }}"
+        state: merged
+    - name: configuration generale des interfaces
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            description: "{{item.description}}"
+            enabled: true
+        state: merged
+      loop: "{{ interface }}"
+    - name:  Configuration L3 des interfaces 
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            ipv4: 
+              - address: "{{ item.ip }}"
+        state: merged
+      loop: "{{ interface }}"
+    - name: Configuration de l'opsf dans l'interface
+      cisco.ios.ios_ospf_interfaces:
+        config:
+         - name: "{{ item.name }}"
+           address_family: 
+              - afi: ipv4
+                network: 
+                  point_to_point: True
+                process:
+                  area_id: "{{ ospf_area }}"
+                  id: "{{ ospf_process }}"
+        state: merged
+      loop: "{{ interface }}"
+    - name: configuration de l'ospf cad router id et passive interface
+      cisco.ios.ios_ospfv2:
+        config:
+          processes:
+            - process_id: "{{ ospf_process }}"
+              passive_interface:
+                interface: 
+                  - name: "Loopback1"
+                    set_interface: true
+              router_id: "{{ router_id }}"
+        state: merged
+    - name: stocker la variable de l'affichage de la table de routage
+      cisco.ios.ios_command:
+        commands: show ip route
+      register: route
+    - name: afficher la ligne
+      debug: 
+        var: route.stdout_lines
+
+  
+            
+          
+          
+
+          
+
+             
+              
+          
+    
+
