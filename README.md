@@ -1,10 +1,10 @@
-# 🔧 Automatisation Ansible – Configuration réseau de routeurs Cisco IOS
+# 🔧 Automatisation Ansible – Configuration réseau basique de routeurs Cisco IOS
 
 ## 🎯 Objectif du projet
 
 > **Appliquer à petite échelle Ansible pour la configuration réseau.**
 
-Ce projet est un petit labo pédagogique : automatiser, avec **Ansible** et la collection **`cisco.ios`**, la configuration de 4 routeurs Cisco IOS (hostname, interfaces, adressage IP et routage dynamique **OSPF**), plutôt que de le faire manuellement en CLI sur chaque équipement.
+Ce projet est un petit labo réaliser dans le but d'automatiser, avec **Ansible** et la collection **`cisco.ios`**, la configuration de 4 routeurs Cisco IOS (hostname, interfaces, adressage IP et routage dynamique **OSPF**), pour éviter de le faire manuellement en CLI sur chaque équipement.
 
 ---
 
@@ -12,7 +12,7 @@ Ce projet est un petit labo pédagogique : automatiser, avec **Ansible** et la c
 
 ![Topologie du réseau](topologie.png)
 
-Le réseau repose sur deux plans bien distincts :
+Le réseau repose sur deux plans distincts :
 
 - **Un plan de "management"** (`10.0.0.0/24`), construit autour du switch **SW1**. Chaque routeur (R1, R2, R3, R4) y possède une interface `Ethernet0/0` avec une adresse fixe (`10.0.0.1` à `10.0.0.4`). C'est ce réseau que la machine **Ubuntu** (`10.0.0.5/24`, poste de contrôle Ansible) utilise pour joindre les routeurs en SSH. Il n'est **pas** annoncé dans OSPF : il sert uniquement à l'administration, pas au transit de trafic.
 - **Un plan de "données"**, en chaîne point-à-point entre les routeurs :
@@ -37,9 +37,11 @@ R2 et R3 sont donc les routeurs "du milieu" : ils ont chacun deux interfaces de 
 
 Chaque routeur porte aussi une interface **Loopback1** (identifiant unique / router-id) : `1.1.1.1` (R1), `2.2.2.2` (R2), `3.3.3.3` (R3), `4.4.4.4` (R4).
 
-> ⚠️ Les interfaces `Ethernet0/0` (management, `10.0.0.0/24`) sont configurées **manuellement** sur les routeurs, en amont — c'est ce qui permet à Ansible de s'y connecter en SSH avant même de lancer le playbook. Tout le reste (hostname, interfaces de transit, adressage, OSPF) est appliqué par Ansible.
+> ⚠️ Les interfaces `Ethernet0/0` (management, `10.0.0.0/24`) sont configurées **manuellement** sur les routeurs, en amont — c'est ce qui permet à Ansible de s'y connecter en SSH avant même de lancer le playbook. 
 
 ![Exemple de comfiguration ssh](ssh.png)
+
+Tout le reste (hostname, interfaces de transit, adressage, OSPF) est appliqué par Ansible.
 
 ---
 
